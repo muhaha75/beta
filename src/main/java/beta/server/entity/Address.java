@@ -42,6 +42,13 @@ public class Address implements Serializable {
     public Address() {
     }
 
+    public Address(String street, String city, String zipCode) {
+        this.street = street;
+        this.city = city;
+        this.zipCode = zipCode;
+    }
+       
+
     /**
      * Tryout constructor, do not use in productive.
      *

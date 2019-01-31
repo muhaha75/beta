@@ -11,23 +11,26 @@ import java.util.Comparator;
 import javax.ejb.Stateless;
 
 /**
- * Allows storage of objects.
- * 
+ * Allows storage of objects. ONLY for Testing
+ *
  * @author oliver.guenther
  */
 @Stateless
 public class BetaService {
-    
-    private SingletonDatabase db;    
-    
+
+    private SingletonDatabase db;
+
     /**
      * Stores a contact in the database.
-     * 
-     * @param contact 
+     *
+     * @param contact
      */
     public void store(Contact contact) {
-        if (contact.getId() == 0) {            
-            Long nextid = db.allContacts().stream().map(Contact::getId).max(Comparator.naturalOrder()).get()+1;
+        if (contact.getId() == 0) {
+            Long nextid = db.allContacts().stream()
+                    .map(Contact::getId)
+                    .max(Comparator.naturalOrder())
+                    .get() + 1;
             contact.setId(nextid);
         }
         if (!db.allContacts().contains(contact)) {
