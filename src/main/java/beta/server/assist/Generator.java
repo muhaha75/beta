@@ -9,6 +9,7 @@ import beta.server.entity.Address;
 import beta.server.entity.Communication;
 import beta.server.entity.Communication.Type;
 import beta.server.entity.Contact;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,12 +20,12 @@ import java.util.Random;
  */
 public class Generator {
 
+    private final GeneratorFormFileSets GEN = new GeneratorFormFileSets();
+
     private final Random R = new Random();
 
-    private final NameGenerator GEN = new NameGenerator();
-
     /**
-     * Generates a {@link Contact}. {@link Contact#prefered} is never set.
+     * Generates a {@link Contact}.
      * <p>
      * @return a generated {@link Contact}.
      */
@@ -37,22 +38,29 @@ public class Generator {
     }
 
     private Contact makeContact(Contact contact, Address address, Communication communication) {
-        Name name = GEN.makeName();
-        contact.setFirstName(name.getFirst());
-        contact.setLastName(name.getLast());
-        contact.setSex(name.getGender().ordinal() == 1 ? Contact.Sex.FEMALE : Contact.Sex.MALE);
-        contact.setTitle(R.nextInt(1000) % 3 == 0 ? "Dr." : null);
+        Contact generatedContact = GEN.makeContact();
+
+        contact.setFirstName(generatedContact.getFirstName());
+        contact.setLastName(generatedContact.getLastName());
+        contact.setSex(generatedContact.getSex());
+        contact.setTitle(generatedContact.getTitle());
         if (communication != null) {
             contact.getCommunications().add(communication);
+            for (int i = 0; i < R.nextInt(5); i++) {
+                contact.getCommunications().add(makeCommunication());
+            }
         }
         if (address != null) {
             contact.getAddresses().add(address);
+            for (int i = 0; i < R.nextInt(5); i++) {
+                contact.getAddresses().add(makeAddress());
+            }
         }
         return contact;
     }
 
     /**
-     * Generates a {@link Address}. {@link Address#preferedType} is never set.
+     * Generates a {@link Address}. is never set.
      * <p>
      * @return a generated {@link Contact}.
      */
@@ -65,10 +73,11 @@ public class Generator {
     }
 
     private Address makeAddress(Address address) {
-        GeneratedAddress genereratedAddress = GEN.makeAddress();
-        address.setCity(genereratedAddress.getTown());
+        Address genereratedAddress = GEN.makeAddress();
+        address.setCity(genereratedAddress.getCity());
         address.setStreet(genereratedAddress.getStreet());
-        address.setZipCode(genereratedAddress.getPostalCode());
+        address.setZipCode(genereratedAddress.getZipCode());
+        address.getCountry(); //get default DE as country
         return address;
     }
 
@@ -111,8 +120,9 @@ public class Generator {
         return makeCommunication(new Communication(id));
     }
 
-    private Communication makeCommunication(Communication c) {
-        return makeCommunication(c, Communication.Type.values()[R.nextInt(Communication.Type.values().length)]);
+    private Communication makeCommunication(Communication communication) {
+        return makeCommunication(communication,
+                Communication.Type.values()[new Random().nextInt(Communication.Type.values().length)]);
     }
 
     private Communication makeCommunication(Communication c, Type type) {

@@ -34,22 +34,6 @@ import java.util.List;
  */
 public class Contact implements Serializable {
 
-    public enum Sex {
-
-        MALE("m"), FEMALE("w");
-
-        private final String sign;
-
-        private Sex(String sign) {
-            this.sign = sign;
-        }
-
-        public String getSign() {
-            return sign;
-        }
-
-    }
-
     private long id;
 
     /**
@@ -128,6 +112,10 @@ public class Contact implements Serializable {
         this.lastName = lastName;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }
@@ -140,10 +128,6 @@ public class Contact implements Serializable {
         return communications;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-    
     /**
      * Returns a human readable representation of title, first and lastname.
      *
@@ -249,5 +233,5 @@ public class Contact implements Serializable {
         }
         return true;
     }
-    
+
 }
