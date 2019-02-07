@@ -24,7 +24,7 @@ public class ContactController implements Serializable {
 
     @PostConstruct
     public void init() {
-
+//
     }
 
 }
