@@ -12,37 +12,115 @@ and open the template in the editor.
     <h:head>
         <title>ContactFilterView</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <h:outputStylesheet library="css" name="styles.css"/>
+
     </h:head>
-    <body>        
-        <p:dataTable id="contactDataTable" var="contact" value="#{contactFilterController.contacts}" style="border:1px" emptyMessage="Leider keine Kontakte gefunden">
-            <f:facet name="header">Kontakte</f:facet>
-            <p:column headerText="Titel">
-                <h:outputText value="#{contact.title}"/>
-            </p:column>
-            <p:column headerText="Vorname">
-                <h:outputText value="#{contact.firstName}"/>
-            </p:column>
-            <p:column headerText="Nachname">
-                <h:outputText value="#{contact.lastName}"/>
-            </p:column>  
-            <p:column headerText="Geschlecht">
-                <h:outputText value="#{contactFilterController.translateSex(contact.sex)}"/>
-            </p:column>
-            <p:column headerText="Anschrift">
-                <h:outputText value="#{contactFilterController.streetsToString(contact)}"/>
-            </p:column>
-            <p:column headerText="Postleitzahl">
-                <h:outputText value="#{contactFilterController.zipCodeToString(contact)}"/>
-            </p:column>
-            <p:column headerText="Stadt">
-                <h:outputText value="#{contactFilterController.cityToString(contact)}"/>
-            </p:column>
-            <p:column headerText="Land">
-                <h:outputText value="#{contactFilterController.countryToString(contact)}"/>
-            </p:column>
-            <p:column headerText="Kommunikation">
-                <h:outputText value="#{contactFilterController.communicationsToString(contact)}"/> 
-            </p:column>
-        </p:dataTable>
-    </body>
+    <h:body>   
+        <h:form id="form">
+            <p:dataTable resizableColumns="true" id="contactDataTable" var="contact" widgetVar="contactTable" 
+                         filteredValue="#{contactFilterController.filteredContacts}" 
+                         value="#{contactFilterController.contacts}" 
+                         style="border:1px" emptyMessage="Leider keine Kontakte gefunden"
+                         stickyHeader="true">
+
+                <f:facet name="header" >
+
+                    Kontakte
+
+                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="pi pi-align-justify" />
+                    <p:columnToggler datasource="contactDataTable" trigger="toggler" />
+
+                </f:facet>
+
+                <p:column filterBy="#{contact.title}" 
+                          headerText="Titel" 
+                          filterMatchMode="exact" 
+                          sortBy="#{contact.title}">
+
+                    <f:facet name="filter" >
+                        <p:selectOneMenu onchange="PF('contactTable').filter()" >
+                            <f:selectItem itemLabel="SelectOne" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{contactFilterController.titelfilter}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+
+                    <h:outputText value="#{contact.title}"/>
+                </p:column>
+                <p:column filterBy="#{contact.firstName}" 
+                          headerText="Vorname" 
+                          filterMatchMode="contains" 
+                          sortBy="#{contact.firstName}">
+                    <h:outputText value="#{contact.firstName}"/>
+                </p:column>
+                <p:column filterBy="#{contact.lastName}" 
+                          headerText="Nachname" 
+                          filterMatchMode="contains">
+                    <h:outputText value="#{contact.lastName}"/>
+                </p:column>  
+                <p:column filterBy="#{contactFilterController.translateSex(contact.sex)}" 
+                          headerText="Geschlecht" 
+                          filterMatchMode="equals" 
+                          sortBy="#{contactFilterController.translateSex(contact.sex)}">
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('contactTable').filter()" >
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="m" itemValue="männlich" />
+                            <f:selectItem itemLabel="w" itemValue="weiblich" />
+                        </p:selectOneButton>
+                    </f:facet>
+                    <h:outputText value="#{contactFilterController.translateSex(contact.sex)}"/>
+                </p:column>
+                <p:column filterBy="#{contactFilterController.streetsToString(contact)}" 
+                          headerText="Anschrift" 
+                          filterMatchMode="contains" 
+                          sortBy="#{contactFilterController.streetsToString(contact)}">
+
+
+                    <h:outputText escape="true" value="#{contactFilterController.streetsToString(contact)}"/>
+
+                </p:column>
+                <p:column filterBy="#{contactFilterController.zipCodeToString(contact)}" 
+                          headerText="Postleitzahl" 
+                          filterMatchMode="contains" 
+                          sortBy="#{contactFilterController.zipCodeToString(contact)}">
+
+
+                    <h:outputText escape="false" value="#{contactFilterController.zipCodeToString(contact)}"/>
+
+                </p:column>
+                <p:column filterBy="#{contactFilterController.cityToString(contact)}" 
+                          headerText="Stadt" 
+                          filterMatchMode="contains" 
+                          sortBy="#{contactFilterController.cityToString(contact)}">
+
+                    <h:outputText escape="false" value="#{contactFilterController.cityToString(contact)}"/>  
+
+                </p:column>
+                <p:column filterBy="#{contactFilterController.countryToString(contact)}" 
+                          headerText="Land" 
+                          filterMatchMode="in" 
+                          sortBy="#{contactFilterController.countryToString(contact)}">
+                    
+                    <f:facet name="filter">
+                        <p:selectCheckboxMenu label="Land" onchange="PF('contactTable').filter()" scrollHeight="150" >
+                            <f:selectItems value="#{contactFilterController.countrys}" />
+                        </p:selectCheckboxMenu>
+                    </f:facet>
+                    
+                    <h:outputText value="#{contactFilterController.countryToString(contact)}"/>
+                    
+                </p:column>
+                <p:column filterBy="#{contactFilterController.communicationsToString(contact)}" 
+                          headerText="Kommunikation" 
+                          filterMatchMode="contains" 
+                          sortBy="#{contactFilterController.communicationsToString(contact)}" >
+                    
+                    <h:outputText escape="false" value="#{contactFilterController.communicationsToString(contact)}"/> 
+                    
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+    </h:body>
 </html>
