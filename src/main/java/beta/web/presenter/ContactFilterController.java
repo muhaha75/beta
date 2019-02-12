@@ -7,6 +7,7 @@ package beta.web.presenter;
 
 import beta.server.eao.ContactEao;
 import beta.server.entity.Contact;
+import beta.server.entity.Country;
 import beta.server.entity.Sex;
 
 import java.io.Serializable;
@@ -39,11 +40,58 @@ public class ContactFilterController implements Serializable {
     private List<Contact> contacts = new ArrayList<>();
 
     /**
+     * Contains all CountryNames of the Country-enum
+     */
+    private List<String> countrys = new ArrayList<>();
+
+    /**
+     * COntains the filtered ContactList
+     */
+    private List<Contact> filteredContacts;
+
+    /**
+     * Contains the Strings for titelfilter
+     */
+    private List<String> titelfilter = new ArrayList<>();
+
+    /**
      * Get the Contact List from ConatactEao
      */
     @PostConstruct
     public void init() {
+        titelfilter.add("Dr.");
+        titelfilter.add("Prof.");
+        titelfilter.add("Prof. Dr.");
+
+        for (Country country : Country.values()) {
+            countrys.add(country.getCountryName());
+        }
         this.contacts = contactEao.findAll();
+        this.filteredContacts = new ArrayList<>(contacts);
+    }
+
+    public List<Contact> getFilteredContacts() {
+        return filteredContacts;
+    }
+
+    public void setFilteredContacts(List<Contact> filteredContacts) {
+        this.filteredContacts = filteredContacts;
+    }
+
+    public List<String> getTitelfilter() {
+        return titelfilter;
+    }
+
+    public void setTitelfilter(List<String> titelfilter) {
+        this.titelfilter = titelfilter;
+    }
+
+    public List<String> getCountrys() {
+        return countrys;
+    }
+
+    public void setCountrys(List<String> countrys) {
+        this.countrys = countrys;
     }
 
     /**
@@ -108,7 +156,7 @@ public class ContactFilterController implements Serializable {
      * Build a String of all countrys of the given contact
      *
      * @param contact
-     * @returna String of countrys or a blank String if contact is Null
+     * @return a String of countrys or a blank String if contact is Null
      */
     public String countryToString(Contact contact) {
 
@@ -141,10 +189,11 @@ public class ContactFilterController implements Serializable {
     }
 
     /**
-     * Translate the given Sex to german and return it
-     * If sex is null it returns a blank-String
+     * Translate the given Sex to german and return it If sex is null it returns
+     * a blank-String
+     *
      * @param sex
-     * @return A String represents the sex in german or a blank-String 
+     * @return A String represents the sex in german or a blank-String
      */
     public String translateSex(Sex sex) {
 
