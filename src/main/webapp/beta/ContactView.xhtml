@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>beta ContactView</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <body>        
+        <p:dataTable id="contactDataTable" var="contact" value="#{contactController.contacts}" style="border:1px" emptyMessage="Leider keine Kontakte gefunden">
+            <f:facet name="header">Kontakte</f:facet>
+            <p:column headerText="Titel">
+                <h:outputText value="#{contact.title}"/>
+            </p:column>
+            <p:column headerText="Vorname">
+                <h:outputText value="#{contact.firstName}"/>
+            </p:column>
+            <p:column headerText="Nachname">
+                <h:outputText value="#{contact.lastName}"/>
+            </p:column>  
+            <p:column headerText="Geschlecht">
+                <h:outputText value="#{contactController.translateSex(contact.sex)}"/>
+            </p:column>
+            <p:column headerText="Anschrift">
+                <h:outputText value="#{contactController.streetsToString(contact)}"/>
+            </p:column>
+            <p:column headerText="Postleitzahl">
+                <h:outputText value="#{contactController.zipCodeToString(contact)}"/>
+            </p:column>
+            <p:column headerText="Stadt">
+                <h:outputText value="#{contactController.cityToString(contact)}"/>
+            </p:column>
+            <p:column headerText="Land">
+                <h:outputText value="#{contactController.countryToString(contact)}"/>
+            </p:column>
+            <p:column headerText="Kommunikation">
+                <h:outputText value="#{contactController.communicationsToString(contact)}"/> 
+            </p:column>
+        </p:dataTable>
+    </body>
+</html>
