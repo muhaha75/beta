@@ -35,6 +35,7 @@ public class ContactFilterController implements Serializable {
     @Inject
     private ContactEao contactEao;
 
+    
     /**
      * Contains all CountryNames of the Country-enum
      */

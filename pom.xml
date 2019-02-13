@@ -43,6 +43,7 @@
                 <scope>import</scope>
             </dependency>
         </dependencies>
+        
     </dependencyManagement>
     <dependencies>        
         <dependency>
@@ -116,8 +117,18 @@
             <version>2.5.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.4</version>
+        </dependency>
     </dependencies>
+
     <repositories>
+        <repository>
+            <id>projectlombok.org</id>
+            <url>http://projectlombok.org/mavenrepo</url>
+        </repository>
         <repository>
             <url>http://repository.primefaces.org/</url>
             <id>PrimeFaces-maven-lib</id>
