@@ -70,7 +70,7 @@ public class ContactEao {
     }
 
     /**
-     * Searching for Contact with this name first or lastname is not import
+     * Searching for Contact with this name first or lastname is not import??? case insensitiv
      *
      * @param searchString
      * @return a List of Contact with this SearchString
