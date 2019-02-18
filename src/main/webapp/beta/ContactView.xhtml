@@ -14,7 +14,7 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <body>        
-        <p:dataTable id="contactDataTable" var="contact" value="#{contactController.contacts}" style="border:1px" emptyMessage="Leider keine Kontakte gefunden">
+        <p:dataTable paginator="true" id="contactDataTable" var="contact" value="#{contactController.contacts}" style="border:1px" emptyMessage="Leider keine Kontakte gefunden">
             <f:facet name="header">Kontakte</f:facet>
             <p:column headerText="Titel">
                 <h:outputText value="#{contact.title}"/>
