@@ -24,7 +24,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
- * provide the resources for the ContactView.xhtml
+ * provide the resources for the filterable ContactView.xhtml
  *
  * @author tjark.uschakow
  */
@@ -69,29 +69,28 @@ public class ContactFilterController implements Serializable {
         this.contacts = contactEao.findAll();
         this.filteredContacts = new ArrayList<>(contacts);
     }
-
+    /**
+     * Returns a List of filtered contacts
+     * @return 
+     */
     public List<Contact> getFilteredContacts() {
         return filteredContacts;
     }
 
-    public void setFilteredContacts(List<Contact> filteredContacts) {
-        this.filteredContacts = filteredContacts;
-    }
-
+    /**
+     * Returns a List of all available Titels for the filter
+     * @return 
+     */
     public List<String> getTitelfilter() {
         return titelfilter;
     }
 
-    public void setTitelfilter(List<String> titelfilter) {
-        this.titelfilter = titelfilter;
-    }
-
+    /**
+     * Returns a List of all available Countrys for the filter
+     * @return 
+     */
     public List<String> getCountrys() {
         return countrys;
-    }
-
-    public void setCountrys(List<String> countrys) {
-        this.countrys = countrys;
     }
 
     /**
