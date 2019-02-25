@@ -69,9 +69,11 @@ public class ContactFilterController implements Serializable {
         this.contacts = contactEao.findAll();
         this.filteredContacts = new ArrayList<>(contacts);
     }
+
     /**
      * Returns a List of filtered contacts
-     * @return 
+     *
+     * @return
      */
     public List<Contact> getFilteredContacts() {
         return filteredContacts;
@@ -79,7 +81,8 @@ public class ContactFilterController implements Serializable {
 
     /**
      * Returns a List of all available Titels for the filter
-     * @return 
+     *
+     * @return
      */
     public List<String> getTitelfilter() {
         return titelfilter;
@@ -87,7 +90,8 @@ public class ContactFilterController implements Serializable {
 
     /**
      * Returns a List of all available Countrys for the filter
-     * @return 
+     *
+     * @return
      */
     public List<String> getCountrys() {
         return countrys;
