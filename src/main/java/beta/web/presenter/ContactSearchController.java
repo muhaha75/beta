@@ -32,11 +32,17 @@ public class ContactSearchController implements Serializable {
      * Contains the searchTerm
      */
     private String searchTerm = "";
-
+    /**
+     * Returns a String that represents the searchTerm
+     * @return 
+     */
     public String getSearchTerm() {
         return searchTerm;
     }
-
+    /**
+     * Set the searchTerm
+     * @param searchTerm 
+     */
     public void setSearchTerm(String searchTerm) {
         this.searchTerm = searchTerm;
     }
