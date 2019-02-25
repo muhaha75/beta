@@ -24,9 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Controller for Contract
+ * Provides the BarCharModel of Contacts for ContactBarChartView.xhtml
  *
- * @author jens.papenhagen
+ * @author tjark.uschakow
  */
 @Named
 @ViewScoped
@@ -44,12 +44,20 @@ public class ContactBarChartController implements Serializable {
         createBarChartModel();
     }
 
+    /**
+     * Returns the BarCharModel
+     *
+     * @return
+     */
     public BarChartModel getBarModel() {
         return barModel;
     }
 
+    /**
+     * Create a BarCharModel containing the Contacts sorted by ZipCode and Sex
+     */
     public void createBarChartModel() {
-        
+
         barModel = new BarChartModel();
 
         ChartSeries male = new ChartSeries();
@@ -66,13 +74,13 @@ public class ContactBarChartController implements Serializable {
 
         barModel.addSeries(male);
         barModel.addSeries(female);
-        
+
         barModel.setTitle("Kontakte in Postleitzahlenbereich");
         Axis xAxis = barModel.getAxis(AxisType.X);
         Axis yAxis = barModel.getAxis(AxisType.Y);
         xAxis.setLabel("PLZ-Bereich");
         yAxis.setLabel("Kontakte");
-        
+
     }
 
     /**
