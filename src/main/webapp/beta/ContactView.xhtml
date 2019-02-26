@@ -13,36 +13,47 @@ and open the template in the editor.
         <title>beta ContactView</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    <body>        
-        <p:dataTable paginator="true" id="contactDataTable" var="contact" value="#{contactController.contacts}" style="border:1px" emptyMessage="Leider keine Kontakte gefunden">
-            <f:facet name="header">Kontakte</f:facet>
-            <p:column headerText="Titel">
-                <h:outputText value="#{contact.title}"/>
-            </p:column>
-            <p:column headerText="Vorname">
-                <h:outputText value="#{contact.firstName}"/>
-            </p:column>
-            <p:column headerText="Nachname">
-                <h:outputText value="#{contact.lastName}"/>
-            </p:column>  
-            <p:column headerText="Geschlecht">
-                <h:outputText value="#{contactController.translateSex(contact.sex)}"/>
-            </p:column>
-            <p:column headerText="Anschrift">
-                <h:outputText value="#{contactController.streetsToString(contact)}"/>
-            </p:column>
-            <p:column headerText="Postleitzahl">
-                <h:outputText value="#{contactController.zipCodeToString(contact)}"/>
-            </p:column>
-            <p:column headerText="Stadt">
-                <h:outputText value="#{contactController.cityToString(contact)}"/>
-            </p:column>
-            <p:column headerText="Land">
-                <h:outputText value="#{contactController.countryToString(contact)}"/>
-            </p:column>
-            <p:column headerText="Kommunikation">
-                <h:outputText value="#{contactController.communicationsToString(contact)}"/> 
-            </p:column>
-        </p:dataTable>
-    </body>
+    <h:body> 
+        <h:form>
+            <p:dataTable paginator="true" id="contactDataTable" rows="10" var="contact" value="#{contactController.lazyModel}" style="border:1px"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         emptyMessage="Leider keine Kontakte gefunden" rowsPerPageTemplate="5,10,15,200" lazy="true">
+                <f:facet name="header">Kontakte</f:facet>
+                <p:column headerText="Titel">
+                    <h:outputText value="#{contact.title}"/>
+                </p:column>
+                <p:column headerText="Vorname">
+                    <h:outputText value="#{contact.firstName}"/>
+                </p:column>
+                <p:column headerText="Nachname">
+                    <h:outputText value="#{contact.lastName}"/>
+                </p:column>  
+                <p:column headerText="Geschlecht">
+                    <h:outputText value="#{contactController.translateSex(contact.sex)}"/>
+                </p:column>
+                <p:column headerText="Anschrift">
+                    <h:outputText value="#{contactController.streetsToString(contact)}"/>
+                </p:column>
+                <p:column headerText="Postleitzahl">
+                    <h:outputText value="#{contactController.zipCodeToString(contact)}"/>
+                </p:column>
+                <p:column headerText="Stadt">
+                    <h:outputText value="#{contactController.cityToString(contact)}"/>
+                </p:column>
+                <p:column headerText="Land">
+                    <h:outputText value="#{contactController.countryToString(contact)}"/>
+                </p:column>
+                <p:column headerText="Kommunikation">
+                    <h:outputText value="#{contactController.communicationsToString(contact)}"/> 
+                </p:column>
+                
+                <f:facet name="paginatorTopLeft">                    
+                </f:facet>
+
+                <f:facet name="paginatorBottomRight">                  
+                </f:facet>
+                
+            </p:dataTable>
+        </h:form> 
+    </h:body>
 </html>

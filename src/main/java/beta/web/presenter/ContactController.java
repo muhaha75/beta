@@ -21,6 +21,7 @@ import javax.faces.view.ViewScoped;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.model.LazyDataModel;
 
 /**
  * provide the resources for the ContactView.xhtml
@@ -37,15 +38,25 @@ public class ContactController implements Serializable {
      * contains the List of Contacts
      */
     private List<Contact> contacts = new ArrayList<>();
+    
+    private LazyDataModel<Contact> lazyModel;
 
     /**
      * Get the Contact List from ConatactEao
      */
     @PostConstruct
     public void init() {
-        this.contacts = contactEao.findAll();
+        contacts = contactEao.findAll();
+        lazyModel = new LazyContactDataModel(contacts);
+        
     }
 
+    public LazyDataModel<Contact> getLazyModel() {
+        return lazyModel;
+    }
+
+    
+    
     /**
      * Returns the List of Contacts
      *
