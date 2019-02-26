@@ -22,9 +22,11 @@ import javax.faces.view.ViewScoped;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.model.LazyDataModel;
 
 /**
- * provide the resources for the filterable ContactView.xhtml pagination and lazy added
+ * provide the resources for the filterable ContactView.xhtml pagination and
+ * lazy added
  *
  * @author tjark.uschakow
  */
@@ -38,6 +40,10 @@ public class ContactFilterController implements Serializable {
      * contains the List of Contacts
      */
     private List<Contact> contacts = new ArrayList<>();
+    /**
+     * LazyDataModel
+     */
+    private LazyDataModel model;
 
     /**
      * Contains all CountryNames of the Country-enum
@@ -66,8 +72,17 @@ public class ContactFilterController implements Serializable {
         for (Country country : Country.values()) {
             countrys.add(country.getCountryName());
         }
-        this.contacts = contactEao.findAll();
-        this.filteredContacts = new ArrayList<>(contacts);
+        contacts = contactEao.findAll();
+        filteredContacts = new ArrayList<>(contacts);
+        model = new LazyContactDataModel(contacts);
+    }
+
+    public LazyDataModel getModel() {
+        return model;
+    }
+
+    public void setModel(LazyContactDataModel model) {
+        this.model = model;
     }
 
     /**
@@ -77,6 +92,15 @@ public class ContactFilterController implements Serializable {
      */
     public List<Contact> getFilteredContacts() {
         return filteredContacts;
+    }
+
+    /**
+     * Set the filtered Contact List
+     *
+     * @param filteredContacts
+     */
+    public void setFilteredContacts(List<Contact> filteredContacts) {
+        this.filteredContacts = filteredContacts;
     }
 
     /**

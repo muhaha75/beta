@@ -20,8 +20,10 @@ and open the template in the editor.
         <h:form id="form">
             <p:dataTable resizableColumns="true" id="contactDataTable" var="contact" widgetVar="contactTable" 
                          filteredValue="#{contactFilterController.filteredContacts}" 
-                         value="#{contactFilterController.contacts}" 
+                         value="#{contactFilterController.model}" 
                          style="border:1px" emptyMessage="Leider keine Kontakte gefunden"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15" rows="10" paginator="true" lazy="true"
                          stickyHeader="true">
 
                 <f:facet name="header" >
