@@ -24,7 +24,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
- * provide the resources for the filterable ContactView.xhtml
+ * provide the resources for the filterable ContactView.xhtml pagination and lazy added
  *
  * @author tjark.uschakow
  */
