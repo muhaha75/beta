@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * provide the search mechanismen for the ContactSearchView 
+ * provide the search mechanismen for the ContactSearchView.xhtml 
  * @author tjark.uschakow
  */
 @Named
