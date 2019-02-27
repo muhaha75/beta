@@ -78,6 +78,7 @@ public class ContactBarChartController implements Serializable {
 
         barModel.addSeries(male);
         barModel.addSeries(female);
+        barModel.setLegendPosition("nw");
 
         barModel.setTitle("Kontakte in Postleitzahlenbereich");
         Axis xAxis = barModel.getAxis(AxisType.X);
