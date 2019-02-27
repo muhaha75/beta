@@ -19,7 +19,6 @@ and open the template in the editor.
     <h:body>   
         <h:form id="form">
             <p:dataTable resizableColumns="true" id="contactDataTable" var="contact" widgetVar="contactTable" 
-                         filteredValue="#{contactFilterController.filteredContacts}" 
                          value="#{contactFilterController.model}" 
                          style="border:1px" emptyMessage="Leider keine Kontakte gefunden"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -46,18 +45,15 @@ and open the template in the editor.
                 </p:column>
                 <p:column filterBy="#{contact.firstName}" 
                           headerText="Vorname" 
-                          filterMatchMode="contains" 
                           sortBy="#{contact.firstName}">
                     <h:outputText value="#{contact.firstName}"/>
                 </p:column>
                 <p:column filterBy="#{contact.lastName}" 
-                          headerText="Nachname" 
-                          filterMatchMode="contains">
+                          headerText="Nachname">                          
                     <h:outputText value="#{contact.lastName}"/>
                 </p:column>  
                 <p:column filterBy="#{contactFilterController.translateSex(contact.sex)}" 
-                          headerText="Geschlecht" 
-                          filterMatchMode="equals" 
+                          headerText="Geschlecht"                          
                           sortBy="#{contactFilterController.translateSex(contact.sex)}">
                     <f:facet name="filter">
                         <p:selectOneButton onchange="PF('contactTable').filter()" >
@@ -70,7 +66,6 @@ and open the template in the editor.
                 </p:column>
                 <p:column filterBy="#{contactFilterController.streetsToString(contact)}" 
                           headerText="Anschrift" 
-                          filterMatchMode="contains" 
                           sortBy="#{contactFilterController.streetsToString(contact)}">
 
 
@@ -79,16 +74,13 @@ and open the template in the editor.
                 </p:column>
                 <p:column filterBy="#{contactFilterController.zipCodeToString(contact)}" 
                           headerText="Postleitzahl" 
-                          filterMatchMode="contains" 
                           sortBy="#{contactFilterController.zipCodeToString(contact)}">
-
 
                     <h:outputText escape="false" value="#{contactFilterController.zipCodeToString(contact)}"/>
 
                 </p:column>
                 <p:column filterBy="#{contactFilterController.cityToString(contact)}" 
                           headerText="Stadt" 
-                          filterMatchMode="contains" 
                           sortBy="#{contactFilterController.cityToString(contact)}">
 
                     <h:outputText escape="false" value="#{contactFilterController.cityToString(contact)}"/>  
@@ -96,12 +88,13 @@ and open the template in the editor.
                 </p:column>
                 <p:column filterBy="#{contactFilterController.countryToString(contact)}" 
                           headerText="Land" 
-                          filterMatchMode="in" 
                           sortBy="#{contactFilterController.countryToString(contact)}">
                     
                     <f:facet name="filter">
-                        <p:selectCheckboxMenu label="Land" onchange="PF('contactTable').filter()" scrollHeight="150" >
-                            <f:selectItems value="#{contactFilterController.countrys}" />
+                        <p:selectCheckboxMenu label="Land" scrollHeight="150" >
+                            <p:ajax event="change" oncomplete="PF('contactTable').filter()"/>
+                            <f:selectItems value="#{contactFilterController.countrys}" var="country" 
+                                           itemLabel="#{country.countryName}" itemValue="#{country}"/>
                         </p:selectCheckboxMenu>
                     </f:facet>
                     
@@ -110,7 +103,6 @@ and open the template in the editor.
                 </p:column>
                 <p:column filterBy="#{contactFilterController.communicationsToString(contact)}" 
                           headerText="Kommunikation" 
-                          filterMatchMode="contains" 
                           sortBy="#{contactFilterController.communicationsToString(contact)}" >
                     
                     <h:outputText escape="false" value="#{contactFilterController.communicationsToString(contact)}"/> 
