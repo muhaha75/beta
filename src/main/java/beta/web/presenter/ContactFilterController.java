@@ -24,7 +24,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
- * provide the resources for the filterable ContactView.xhtml
+ * provide the resources for the filterable ContactFilterView.xhtml
  *
  * @author tjark.uschakow
  */
@@ -78,6 +78,14 @@ public class ContactFilterController implements Serializable {
     public List<Contact> getFilteredContacts() {
         return filteredContacts;
     }
+    
+    /**
+     * Set the Value for filtered contact
+     * @param filteredContacts 
+     */
+    public void setFilteredContacts(List<Contact> filteredContacts) {
+        this.filteredContacts = filteredContacts;
+    }    
 
     /**
      * Returns a List of all available Titels for the filter
