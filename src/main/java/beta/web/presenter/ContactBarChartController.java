@@ -6,8 +6,10 @@
 package beta.web.presenter;
 
 import beta.server.eao.ContactEao;
+import beta.server.entity.Contact;
 import beta.server.entity.Sex;
 import java.io.Serializable;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -38,9 +40,11 @@ public class ContactBarChartController implements Serializable {
     private ContactEao eao;
 
     private BarChartModel barModel = null;
+    private List<Contact> contacts;
 
     @PostConstruct
     public void init() {
+        contacts = eao.findAll();
         createBarChartModel();
     }
 
@@ -94,8 +98,7 @@ public class ContactBarChartController implements Serializable {
      */
     private int countContactsInRange(Sex sex, int start, int range) {
 
-        int count = eao.find("")
-                .stream()
+        int count = contacts.stream()
                 .filter(contact -> contact.getSex().equals(sex))
                 .flatMap(contact -> contact.getAddresses()
                 .stream().filter(address -> ((Integer.parseInt(address.getZipCode()) < (start + range)) && ((Integer.parseInt(address.getZipCode()) >= start)))))
