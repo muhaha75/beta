@@ -7,9 +7,12 @@ package beta.server.eao;
 
 import beta.server.assist.SingletonDatabase;
 import beta.server.entity.Contact;
+import beta.server.entity.Country;
+import beta.server.entity.Sex;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,6 +32,7 @@ public class ContactEao {
 
     @Inject
     private SingletonDatabase db;
+    private int rowCount;
 
     private final Logger L = LoggerFactory.getLogger(ContactEao.class);
 
@@ -142,6 +146,106 @@ public class ContactEao {
             L.info(c.toFullName());
         }
         return zipCodeList;
+    }
+
+    public int getRowCount() {
+        return rowCount;
+    }
+
+    /**
+     * Return a SubList of Contacts, matching the filters, in range from start
+     * to limit
+     *
+     * @param filter
+     * @param start
+     * @param limit
+     * @return
+     */
+    public List<Contact> filterContactsInRange(Map<String, Object> filters, int start, int limit) {
+        List<Contact> filteredList = db.allContacts();
+
+        //{firstName=sdf, lastName=sdfs, zipCode=sdfsd, country=[Ljava.lang.String;@68ca7542, communications=sdf, city=sdfs, street=sdfsdf, sex=MALE, title=Dr.}
+        for (Map.Entry<String, Object> filter : filters.entrySet()) {
+            L.info("Filter {}", filter.getValue());
+            switch (filter.getKey()) {
+                case "title":
+                    L.info("Title Filter!! {}", filter.getValue());
+                    filteredList = filteredList.stream()
+                            .filter(cont -> cont.getTitle() != null)
+                            .filter(cont -> ((String) filter.getValue()).contains(cont.getTitle()))
+                            .collect(Collectors.toList());
+                    break;
+                case "firstName":
+                    filteredList = filteredList.stream()
+                            .filter(cont -> cont.getFirstName().contains((String) filter.getValue()))
+                            .collect(Collectors.toList());
+                    break;
+                case "lastName":
+                    filteredList = filteredList.stream()
+                            .filter(cont -> cont.getLastName().contains((String) filter.getValue()))
+                            .collect(Collectors.toList());
+                    break;
+                case "zipCode":
+                    filteredList = filteredList.stream()
+                            .filter(cont -> cont.getAddresses().stream()
+                            .map(add -> add.getZipCode())
+                            .collect(Collectors.joining()).contains((String) filter.getValue()))
+                            .collect(Collectors.toList());
+                    break;
+                case "country":
+
+                    filteredList = filteredList.stream()
+                            .filter(cont -> cont.getAddresses()
+                            .stream()
+                            .map(add -> add.getCountry().name())
+                            .collect(Collectors.joining())
+                            .contains((String) filter.getValue()))
+                            .collect(Collectors.toList());
+
+                    break;
+                case "city":
+                    filteredList = filteredList.stream()
+                            .filter(cont -> cont.getAddresses().stream()
+                            .map(add -> add.getCity())
+                            .collect(Collectors.joining())
+                            .contains((String) filter.getValue()))
+                            .collect(Collectors.toList());
+                    break;
+                case "street":
+                    filteredList = filteredList.stream()
+                            .filter(cont -> cont.getAddresses().stream()
+                            .map(add -> add.getStreet())
+                            .collect(Collectors.joining())
+                            .contains((String) filter.getValue()))
+                            .collect(Collectors.toList());
+                    break;
+                case "sex":
+                    filteredList = filteredList.stream()
+                            .filter(cont -> cont.getSex().name().equals(filter.getValue()))
+                            .collect(Collectors.toList());
+                    break;
+                case "communications":
+                    filteredList = filteredList.stream()
+                            .filter(cont -> cont.getCommunications().stream()
+                            .map(com -> com.getType().name() + " " + com.getIdentifier())
+                            .collect(Collectors.joining())
+                            .contains((String) filter.getValue()))
+                            .collect(Collectors.toList());
+                    break;
+
+                default:
+                    throw new AssertionError("Error in filterContactInRange : unexpected key in filterList Key: " + filter.getKey());
+            }
+        }
+
+        this.rowCount = filteredList.size();
+
+        if (limit >= filteredList.size()) {
+            return filteredList.subList(start, filteredList.size());
+        } else {
+            return filteredList.subList(start, limit);
+        }
+
     }
 
 }

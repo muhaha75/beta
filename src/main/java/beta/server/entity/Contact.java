@@ -45,7 +45,7 @@ public class Contact implements Serializable {
     /**
      * All titles the contact carries.
      */
-    private String title;
+    private String title = "";
 
     private String firstName;
 

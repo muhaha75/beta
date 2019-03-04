@@ -25,7 +25,7 @@ import java.util.*;
  */
 public enum Country {
 
-    GERMANY("Deutschland", "DE"), AUSTRIA("Östreich", "AT");
+    GERMANY("Deutschland", "DE"), AUSTRIA("Östereich", "AT");
 
     private final String countryName;
 

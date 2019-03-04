@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      >
+    <h:head>
+        <title>ContactFilterView</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+
+
+    </h:head>
+    <h:body>
+        <!--import Enums-->
+        <p:importEnum type="beta.web.presenter.Title" var="TitleEnum" allSuffix="ALL_ENUM_VALUES"/>
+        <p:importEnum type="beta.server.entity.Country" var="CountryEnum" allSuffix="ALL_ENUM_VALUES"/>
+        <p:importEnum type="beta.server.entity.Sex" var="SexEnum" allSuffix="ALL_ENUM_VALUES"/>
+        <!--DataTable-->
+        <h:form id="form">
+            <p:dataTable resizableColumns="true" id="contactDataTable" var="contact" widgetVar="contactTable" 
+                         value="#{lazyContactFilterController.model}" 
+                         emptyMessage="Leider keine Kontakte gefunden"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15" rows="10" paginator="true" lazy="true"
+                         stickyHeader="true">
+
+                <f:facet name="header" >
+                    Kontakte
+                </f:facet>
+
+                <p:column style="width: 16px" >
+                    <p:rowToggler rendered="#{contact.addresses.size() gt 1 or contact.communications.size() gt 1}"/>
+                </p:column>
+
+                <p:column filterBy="#{contact.title}" 
+                          headerText="Titel" >
+
+                    <f:facet name="filter" >
+                        <p:selectOneMenu onchange="PF('contactTable').filter()">
+                            <f:selectItem itemLabel="SelectOne" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{TitleEnum.ALL_ENUM_VALUES}" var="titleVar" itemLabel="#{titleVar.getSign()}" itemValue="#{titleVar.getSign()}"/>
+<!--                            <p:ajax -->
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{contact.title}"/>
+                </p:column>
+
+                <p:column filterBy="#{contact.firstName}" 
+                          headerText="Vorname">
+                    <h:outputText value="#{contact.firstName}"/>
+                </p:column>
+
+                <p:column filterBy="#{contact.lastName}" 
+                          headerText="Nachname">                          
+                    <h:outputText value="#{contact.lastName}"/>
+                </p:column>  
+
+                <p:column filterBy="#{contact.sex}" 
+                          headerText="Geschlecht">
+                    <f:facet name="filter">
+                        <p:selectOneButton>
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="#{SexEnum.MALE.getSign()}" itemValue="#{SexEnum.MALE}" />
+                            <f:selectItem itemLabel="#{SexEnum.FEMALE.getSign()}" itemValue="#{SexEnum.FEMALE}" />
+                            <p:ajax event="change" oncomplete="PF('contactTable').filter()"/>
+                        </p:selectOneButton>
+                    </f:facet>
+                    <h:outputText value="männlich" rendered="#{contact.sex==SexEnum.MALE}" />
+                    <h:outputText value="weiblich" rendered="#{contact.sex==SexEnum.FEMALE}" />
+                </p:column>
+
+                <p:column filterBy="#{street}" 
+                          headerText="Anschrift">
+
+                    <h:outputText value="#{contact.addresses.get(0).street}" rendered="#{contact.addresses.size()>0}" />
+                </p:column>
+
+                <p:column filterBy="#{zipCode}" 
+                          headerText="Postleitzahl">
+
+                    <h:outputText value="#{contact.addresses.get(0).zipCode}" rendered="#{contact.addresses.size()>0}"/>
+                </p:column>
+
+                <p:column filterBy="#{city}" 
+                          headerText="Stadt">
+
+                    <h:outputText value="#{contact.addresses.get(0).city}" rendered="#{contact.addresses.size()>0}"/>  
+                </p:column>
+
+                <p:column filterBy="#{country}" 
+                          headerText="Land">
+
+                    <f:facet name="filter">
+                        <p:selectCheckboxMenu label="Land" scrollHeight="150" >                            
+                            <f:selectItems value="#{CountryEnum.ALL_ENUM_VALUES}" var="country" 
+                                           itemLabel="#{country.name()}" itemValue="#{country.name()}" />
+                            <p:ajax event="change" oncomplete="PF('contactTable').filter()"/>
+                        </p:selectCheckboxMenu>
+                    </f:facet>
+                    <h:outputText value="#{contact.addresses.get(0).getCountry().getCountryName()}" rendered="#{contact.addresses.size()>0}"/>
+                </p:column>
+
+                <p:column filterBy="#{contact.communications}" 
+                          headerText="Kommunikation">
+
+                    <h:outputText value="#{contact.communications.get(0).getType().name().concat(': ').concat(contact.communications.get(0).getIdentifier())}"/>
+                </p:column>
+                <!--Table Expansion-->
+                <p:rowExpansion>
+                    <p:panelGrid columns="2" styleClass="ui-noborder">
+
+                        <p:spacer rendered="#{contact.addresses.size() gt 1}"></p:spacer>  
+
+                        <p:dataList rendered="#{contact.addresses.size() gt 1}" value="#{contact.addresses.subList(1, contact.addresses.size())}" var="address" >
+                            <f:facet name="header">
+                                Weitere Adressen
+                            </f:facet>
+                            <h:outputText value="#{address.getStreet().concat(' - ').concat(address.getZipCode()).concat(' - ').concat(address.getCity()).concat(' - ').concat(address.getCountry().getCountryName())}"/>
+                        </p:dataList>
+
+                        <p:spacer rendered="#{contact.communications.size() gt 1}"></p:spacer> 
+
+                        <p:dataList  rendered="#{contact.communications.size() gt 1}" var="communication" value="#{contact.communications.subList(1, contact.communications.size())}" >
+                            <f:facet name="header" >
+                                Weitere Kommunikationen
+                            </f:facet>
+                            <h:outputText value="#{communication.getType().name().concat(': ').concat(communication.getIdentifier())}" />
+                        </p:dataList>
+
+                    </p:panelGrid>
+                </p:rowExpansion>
+
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>
