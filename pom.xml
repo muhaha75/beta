@@ -17,6 +17,39 @@
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>2.22.1</version>
                 </plugin>
+                 <plugin>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                            <systemPropertyVariables>
+                                <arquillian.launch>wildfly-remote</arquillian.launch>
+                            </systemPropertyVariables>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.mysema.maven</groupId>
+                        <artifactId>maven-apt-plugin</artifactId>
+                        <version>0.2.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>process</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>target/generated-sources/java</outputDirectory>
+                                    <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -66,6 +99,18 @@
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>0.5.4</version>
+            <scope>provided</scope>
+        </dependency>        
+    
+        <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-jdoql</artifactId>
+            <version>0.5.4</version>
         </dependency>
         <!-- Test Dependencies -->
         <dependency>
@@ -153,23 +198,7 @@
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
-                    <plugin>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                            <systemPropertyVariables>
-                                <arquillian.launch>wildfly-remote</arquillian.launch>
-                            </systemPropertyVariables>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
+                   
                 </plugins>
             </build>
         </profile>
