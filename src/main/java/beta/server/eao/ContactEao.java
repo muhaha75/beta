@@ -8,7 +8,7 @@ package beta.server.eao;
 import beta.server.assist.SingletonDatabase;
 import beta.server.entity.Contact;
 import beta.server.entity.Country;
-import beta.server.entity.Sex;
+
 import java.util.ArrayList;
 
 import java.util.List;
@@ -171,7 +171,9 @@ public class ContactEao {
                 case "title":
                     L.info("Title Filter!! {}", filter.getValue());
                     filteredList = filteredList.stream()
-                            .filter(cont -> {return cont.getTitle() !=null &&((String) filter.getValue()).contains(cont.getTitle());})
+                            .filter(cont -> {
+                                return cont.getTitle() != null && ((String) filter.getValue()).contains(cont.getTitle());
+                            })
                             .collect(Collectors.toList());
                     break;
                 case "firstName":
@@ -196,8 +198,7 @@ public class ContactEao {
                     filteredList = filteredList.stream()
                             .filter(cont -> cont.getAddresses()
                             .stream()
-                            .filter(add -> filterContainsCountry((String[])filter.getValue(), add.getCountry())).collect(Collectors.counting())!=0).collect(Collectors.toList());
-                            
+                            .filter(add -> filterContainsCountry((String[]) filter.getValue(), add.getCountry())).collect(Collectors.counting()) != 0).collect(Collectors.toList());
 
                     break;
                 case "city":
@@ -244,18 +245,26 @@ public class ContactEao {
         }
 
     }
-    
-    private boolean filterContainsCountry(String[] filter, Country country){
-    
-    boolean contains=false;
-    
+
+    /**
+     * Return true if the given filter array contains the konstantname of the
+     * given Country
+     *
+     * @param filter
+     * @param country
+     * @return
+     */
+    private boolean filterContainsCountry(String[] filter, Country country) {
+
+        boolean contains = false;
+
         for (String countryName : filter) {
             contains = country.name().equals(countryName);
-            if(contains){
-            return contains;
+            if (contains) {
+                return contains;
             }
         }
-        return contains;   
+        return contains;
     }
 
 }

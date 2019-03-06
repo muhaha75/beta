@@ -6,13 +6,8 @@
 package beta.web.presenter;
 
 import beta.server.eao.ContactEao;
-import beta.server.entity.Contact;
-import beta.server.entity.Sex;
 
 import java.io.Serializable;
-import java.util.List;
-
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -32,6 +27,7 @@ import org.primefaces.model.LazyDataModel;
 @Named
 @ViewScoped
 public class LazyContactFilterController implements Serializable {
+
     /**
      * The connection to the Database
      */
@@ -51,7 +47,7 @@ public class LazyContactFilterController implements Serializable {
      */
     @PostConstruct
     public void init() {
-        
+
         model = new LazyContactDataModel(contactEao);
     }
 
