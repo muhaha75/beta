@@ -38,14 +38,7 @@ public class LazyContactDataModel extends LazyDataModel<Contact> {
         L.info("inside Load");
         L.info("Filter Values: {}", filters);       
         L.info("Rowcount: {}", this.getRowCount());
-        
-        if(filters.get("country")!=null){
-            if(filters.get("country") instanceof Country){
-                L.info("Is Instance of Country");
-            }else{
-            L.info("Is not an instace of Country");
-            } 
-        }
+
         
         List<Contact> filteredList;
 

@@ -101,7 +101,7 @@ and open the template in the editor.
                     <f:facet name="filter">
                         <p:selectCheckboxMenu label="Land" scrollHeight="150" >                            
                             <f:selectItems value="#{CountryEnum.ALL_ENUM_VALUES}" var="country" 
-                                           itemLabel="#{country.name()}" itemValue="#{country.name()}" />
+                                           itemLabel="#{country.getCountryName()}" itemValue="#{country}" />
                             <p:ajax event="change" oncomplete="PF('contactTable').filter()"/>
                         </p:selectCheckboxMenu>
                     </f:facet>

@@ -171,8 +171,7 @@ public class ContactEao {
                 case "title":
                     L.info("Title Filter!! {}", filter.getValue());
                     filteredList = filteredList.stream()
-                            .filter(cont -> cont.getTitle() != null)
-                            .filter(cont -> ((String) filter.getValue()).contains(cont.getTitle()))
+                            .filter(cont -> {return cont.getTitle() !=null &&((String) filter.getValue()).contains(cont.getTitle());})
                             .collect(Collectors.toList());
                     break;
                 case "firstName":
@@ -197,10 +196,8 @@ public class ContactEao {
                     filteredList = filteredList.stream()
                             .filter(cont -> cont.getAddresses()
                             .stream()
-                            .map(add -> add.getCountry().name())
-                            .collect(Collectors.joining())
-                            .contains((String) filter.getValue()))
-                            .collect(Collectors.toList());
+                            .filter(add -> filterContainsCountry((String[])filter.getValue(), add.getCountry())).collect(Collectors.counting())!=0).collect(Collectors.toList());
+                            
 
                     break;
                 case "city":
@@ -246,6 +243,19 @@ public class ContactEao {
             return filteredList.subList(start, limit);
         }
 
+    }
+    
+    private boolean filterContainsCountry(String[] filter, Country country){
+    
+    boolean contains=false;
+    
+        for (String countryName : filter) {
+            contains = country.name().equals(countryName);
+            if(contains){
+            return contains;
+            }
+        }
+        return contains;   
     }
 
 }
