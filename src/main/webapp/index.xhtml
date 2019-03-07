@@ -7,6 +7,9 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
+        <script type="text/javascript">
+            $(document).ready(function () {#{startUp.onLoad()}});
+        </script>
         Hello from Facelets
         <br />
         <h:link id="demo" outcome="beta/Demo" value="Demo" /> <br />

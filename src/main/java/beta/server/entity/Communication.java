@@ -16,14 +16,22 @@
  */
 package beta.server.entity;
 
+import beta.server.assist.StringUtils;
 import java.io.Serializable;
 import java.util.Optional;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * Specifies a way of communication.
  * <p>
  * @author oliver.guenther
  */
+@Entity
 public class Communication implements Serializable {
 
     public static final String EMAIL_PATTERN = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";
@@ -60,12 +68,14 @@ public class Communication implements Serializable {
         }
 
     }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     /**
      * The type of communication.
      */
+    @Enumerated(EnumType.ORDINAL)
     private Type type;
 
     /**

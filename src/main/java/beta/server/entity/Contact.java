@@ -16,10 +16,16 @@
  */
 package beta.server.entity;
 
+import beta.server.assist.StringUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * A contact bound by a specific customer.
@@ -32,8 +38,10 @@ import java.util.List;
  *
  * @author pascal.perau
  */
+@Entity
 public class Contact implements Serializable {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     /**
@@ -54,11 +62,13 @@ public class Contact implements Serializable {
     /**
      * All {@link Address}<code>es</code> associated with the contact.
      */
+    @ElementCollection
     private final List<Address> addresses = new ArrayList<>();
 
     /**
      * All {@link Address}<code>es</code> associated with the contact.
      */
+    @ElementCollection
     private final List<Communication> communications = new ArrayList<>();
 
     public Contact() {
