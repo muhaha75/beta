@@ -7,6 +7,7 @@ package beta.server.emo;
 
 import beta.server.entity.Contact;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
@@ -21,8 +22,8 @@ import org.slf4j.LoggerFactory;
 public class ContactEmo {
 
     private final Logger L = LoggerFactory.getLogger(ContactEmo.class);
-
-    @PersistenceContext(unitName = "beta-pu")
+    
+    @Inject
     private EntityManager em;
 
     /**
@@ -31,11 +32,8 @@ public class ContactEmo {
      * @param contact
      */
     public void create(Contact contact) {
-
-        if (contact != null && contact.getId() < 1) {
-
+        if (contact != null) {
             em.persist(contact);
-
         }
     }
 

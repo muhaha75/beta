@@ -5,6 +5,7 @@
  */
 package beta.server.assist;
 
+import beta.server.eao.ContactEao;
 import beta.server.entity.Address;
 import beta.server.entity.Communication;
 import beta.server.entity.Communication.Type;
@@ -13,12 +14,15 @@ import beta.server.entity.Contact;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author oliver.guenther
  */
 public class Generator {
+        private final Logger L = LoggerFactory.getLogger(Generator.class);
 
     private final GeneratorFormFileSets GEN = new GeneratorFormFileSets();
 
@@ -30,6 +34,7 @@ public class Generator {
      * @return a generated {@link Contact}.
      */
     public Contact makeContact() {
+        L.info("inside Generator");
         return makeContact(new Contact(), makeAddress(), makeCommunication());
     }
 

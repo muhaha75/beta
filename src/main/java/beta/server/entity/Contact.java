@@ -21,11 +21,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  * A contact bound by a specific customer.
@@ -39,7 +44,7 @@ import javax.persistence.Id;
  * @author pascal.perau
  */
 @Entity
-public class Contact implements Serializable {
+public class Contact implements Serializable,EagerAble {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -48,6 +53,7 @@ public class Contact implements Serializable {
      * Salutation for the contact. Seperated from the title for more
      * flexibility.
      */
+    @Enumerated(EnumType.ORDINAL)
     private Sex sex;
 
     /**
@@ -62,13 +68,13 @@ public class Contact implements Serializable {
     /**
      * All {@link Address}<code>es</code> associated with the contact.
      */
-    @ElementCollection
+    @OneToMany( cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private final List<Address> addresses = new ArrayList<>();
 
     /**
      * All {@link Address}<code>es</code> associated with the contact.
      */
-    @ElementCollection
+    @OneToMany( cascade = CascadeType.ALL)   
     private final List<Communication> communications = new ArrayList<>();
 
     public Contact() {
@@ -242,6 +248,12 @@ public class Contact implements Serializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void fetchEager() {
+        addresses.size();
+        communications.size();
     }
 
 }

@@ -12,6 +12,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -26,14 +27,13 @@ import org.slf4j.LoggerFactory;
 public class ContactEao {
 
     private final Logger L = LoggerFactory.getLogger(ContactEao.class);
-
-    @PersistenceContext(unitName = "beta-pu")
+    @Inject
     private EntityManager em;
 
     public List<Contact> findAll() {
         
         QContact contact = QContact.contact;
-        return new JPAQuery<>(em).select(contact).from(contact).limit(0).fetch();
+        return new JPAQuery<>(em).select(contact).from(contact).fetch();
      
     }
 

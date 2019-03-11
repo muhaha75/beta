@@ -7,6 +7,8 @@ package beta;
 
 import beta.server.assist.Generator;
 import beta.server.eao.ContactEao;
+import beta.server.emo.ContactEmo;
+import beta.server.entity.Contact;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
@@ -22,18 +24,20 @@ import javax.inject.Named;
 @Startup
 @Singleton
 public class StartUp {
-
+    
     @Inject
-    ContactEao contactEao;
-
+    private ContactEao contactEao;
+    
+    @Inject    
+    private ContactEmo contactEmo;
+    
     public void onLoad() {
-
+        
         Generator gen = new Generator();
         if (contactEao.count() < 1) {
-        gen.makeContact();
-//            for (int i = 0; i < 2; i++) {
-//                
-//            }
+            Contact makeContact = gen.makeContact();
+            contactEmo.create(makeContact);
+            
         }
     }
 }
